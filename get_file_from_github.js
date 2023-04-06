@@ -1,7 +1,7 @@
 const https = require('https');
 const fs = require('fs');
 
-function blobUrlToApiUrl(blobUrl, branch = 'main') {
+function blobUrlToApiUrl(blobUrl) {
   // extract the user name, repository name, and file path
   const matches = blobUrl.match(/github.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)/);
   const userName = matches[1];
