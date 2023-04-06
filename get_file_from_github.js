@@ -1,17 +1,42 @@
 const https = require('https');
+const fs = require('fs');
+
+function blobUrlToApiUrl(blobUrl) {
+  
+  // extract the user name, repository name, and file path
+  const matches = blobUrl.match(/github.com\/([^\/]+)\/([^\/]+)\/blob\/[^\/]+\/(.+)/);
+  const userName = matches[1];
+  const repoName = matches[2];
+  const filePath = matches[3];
+
+  // construct the API URL for the file contents
+  const apiUrl = `https://api.github.com/repos/${userName}/${repoName}/contents/${filePath}`;
+  return apiUrl;
+}
+
+
+// read the configuration file
+const configFile = 'config.json';
+const config = JSON.parse(fs.readFileSync(configFile));
+
+// set your access token here
+const ACCESS_TOKEN = config.MY_GITHUB_ACCESS_TOKEN;
 
 // create a request URL
-const url = 'https://api.github.com/repos/{owner}/{repo}/contents/{path}';
+const blob_url = 'https://github.com/yunsangr/Fetch-Files-From-GitHub-Repos/blob/main/my_file.json'
+const github_api_url = blobUrlToApiUrl(blob_url)
 
-// put the token with header
+
+// set headers
 const options = {
   headers: {
-    'Authorization': 'Token YOUR_ACCESS_TOKEN'
+    'Authorization': `Bearer ${ACCESS_TOKEN}`,
+    'User-Agent': 'My-App'
   }
 };
 
 // make a GET request
-https.get(url, options, (response) => {
+https.get(github_api_url, options, (response) => {
   let data = '';
 
   // as data is received in chunks, concatenate it
@@ -23,9 +48,10 @@ https.get(url, options, (response) => {
   response.on('end', () => {
     if (response.statusCode === 200) {
       const content = JSON.parse(data).content; // THIS IS YOUR DESIRED FILE DATA
-      console.log(content);
+      const decodedContent = Buffer.from(content, 'base64').toString('utf-8');
+      console.log(decodedContent);
     } else {
-      console.log('Error: Unable to retrieve JSON file');
+      console.log('Error: Unable to retrieve file');
     }
   });
 }).on('error', (error) => {
