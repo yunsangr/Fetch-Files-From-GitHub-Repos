@@ -1,19 +1,17 @@
 const https = require('https');
 const fs = require('fs');
 
-function blobUrlToApiUrl(blobUrl) {
-  
+function blobUrlToApiUrl(blobUrl, branch = 'main') {
   // extract the user name, repository name, and file path
-  const matches = blobUrl.match(/github.com\/([^\/]+)\/([^\/]+)\/blob\/[^\/]+\/(.+)/);
+  const matches = blobUrl.match(/github.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)/);
   const userName = matches[1];
   const repoName = matches[2];
-  const filePath = matches[3];
-
+  const branchName = matches[3];
+  const filePath = matches[4];
   // construct the API URL for the file contents
-  const apiUrl = `https://api.github.com/repos/${userName}/${repoName}/contents/${filePath}`;
+  const apiUrl = `https://api.github.com/repos/${userName}/${repoName}/contents/${filePath}?ref=${branchName}`;
   return apiUrl;
 }
-
 
 // read the configuration file
 const configFile = 'config.json';
@@ -25,7 +23,7 @@ const ACCESS_TOKEN = config.MY_GITHUB_ACCESS_TOKEN;
 // create a request URL
 const blob_url = 'https://github.com/yunsangr/Fetch-Files-From-GitHub-Repos/blob/main/my_file.json'
 const github_api_url = blobUrlToApiUrl(blob_url)
-
+console.log(github_api_url)
 
 // set headers
 const options = {
