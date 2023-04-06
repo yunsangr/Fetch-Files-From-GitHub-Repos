@@ -21,9 +21,9 @@ const config = JSON.parse(fs.readFileSync(configFile));
 const ACCESS_TOKEN = config.MY_GITHUB_ACCESS_TOKEN;
 
 // create a request URL
-const blob_url = 'https://github.com/yunsangr/Fetch-Files-From-GitHub-Repos/blob/main/my_file.json'
+// TODO: set your blbl_url
+const blob_url = 'https://github.com/yunsangr/Fetch-Files-From-GitHub-Repos/blob/main/my_file.json' //example
 const github_api_url = blobUrlToApiUrl(blob_url)
-console.log(github_api_url)
 
 // set headers
 const options = {
