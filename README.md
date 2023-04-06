@@ -25,5 +25,23 @@ $ node get_file_from_github.js
     "a": 1,
     "b": 2
 }
+```
 
+## Functions
+
+```js
+function blobUrlToApiUrl(blobUrl){...} returns apiUrl
+```
+##### Arguments:
+- blobUrl (string): The URL of the file in the GitHub repository, in the blob format 
+  - blob format: https://github.com/username/repo/blob/branch/path/to/file
+  - e.g. https://github.com/yunsangr/Fetch-Files-From-GitHub-Repos/blob/main/my_file.json
+##### Return:
+- A string that represents the API URL for the file contents.
+
+##### Example:
+```js
+const blobUrl = 'https://github.com/username/repo/blob/branch/path/to/file';
+const apiUrl = blobUrlToApiUrl(blobUrl);
+// apiUrl is 'https://api.github.com/repos/username/repo/contents/path/to/file?ref=branch'
 ```
